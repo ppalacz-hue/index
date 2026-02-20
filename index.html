@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Panel Bonusów</title>
+<style>
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg,#004080,#0073e6);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+h1 {
+    font-size: 48px;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+
+input {
+    font-size: 28px;
+    padding: 15px;
+    width: 400px;
+    border-radius: 8px;
+    border: none;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button {
+    font-size: 24px;
+    padding: 12px 25px;
+    border-radius: 8px;
+    border: none;
+    background-color: #00bfff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0080ff;
+}
+
+#bonus {
+    font-size: 36px;
+    margin-top: 40px;
+    padding: 20px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 12px;
+    min-width: 300px;
+}
+</style>
+</head>
+<body>
+
+<h1>Panel Bonusów</h1>
+
+<input type="text" id="scanInput" placeholder="Wpisz lub zeskanuj ID">
+<button id="checkBtn">Sprawdź premię</button>
+
+<div id="bonus"></div>
+
+<script>
+// Tu wpisujesz ID i odpowiadające premie
+const data = {
+    "8500": "Twój bonus: 5000 PLN",
+    "12345": "Twój bonus: 1200 PLN",
+    "67890": "Twój bonus: 950 PLN"
+    // Tutaj możesz dodać resztę pracowników
+};
+
+function showBonus() {
+    const id = document.getElementById("scanInput").value.trim();
+    const bonusDiv = document.getElementById("bonus");
+    if(data[id]) {
+        bonusDiv.innerText = data[id];
+    } else {
+        bonusDiv.innerText = "Nie znaleziono ID!";
+    }
+    document.getElementById("scanInput").value = "";
+}
+
+document.getElementById("checkBtn").addEventListener("click", showBonus);
+document.getElementById("scanInput").addEventListener("keypress", function(e){
+    if(e.key === "Enter") showBonus();
+});
+</script>
+
+</body>
+</html>
