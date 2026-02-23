@@ -6,16 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+/* ===== BODY I PRZEWIJANIE ===== */
 body {
     margin:0;
     font-family: Arial, sans-serif;
     background:#ff5a00;
     display:flex;
     flex-direction:column;
-    justify-content:center;
     align-items:center;
-    height:100vh;
-    overflow:hidden;
+    min-height:100vh;
+    overflow-y:auto; /* pionowy scroll jeśli potrzebny */
     position:relative;
 }
 
@@ -25,28 +25,29 @@ body {
     top:0; bottom:0; left:0; right:0;
     width:80%;
     height:80%;
-    object-fit:contain; /* zachowuje proporcje mapy */
+    object-fit:contain; /* całe kraje widoczne */
     opacity:0.15;       /* subtelna w tle */
-    z-index:0;          /* wszystko inne nad mapą */
+    z-index:0;
     pointer-events:none;
-    margin:auto;        /* wycentrowanie */
+    margin:auto;
 }
 
 /* ===== LOGO NAD PANELEM ===== */
 .logo-center {
     position:relative;
-    z-index:2;          /* nad mapą */
-    margin-bottom:20px; /* odstęp od panelu */
+    z-index:2;
+    margin-bottom:20px;
 }
 
 .logo-center img {
-    height:120px;       /* większe, ładnie widoczne */
+    height:120px;
 }
 
 /* ===== PANEL ===== */
 .panel {
     background:white;
-    width:900px;
+    width:90%;
+    max-width:900px;
     height:220px;
     display:flex;
     align-items:center;
@@ -54,7 +55,7 @@ body {
     border-radius:8px;
     box-shadow:0 10px 25px rgba(0,0,0,0.3);
     position:relative;
-    z-index:2;   /* nad mapą */
+    z-index:2;
 }
 
 .left-icon, .right-icon {
@@ -77,7 +78,8 @@ body {
 }
 
 input {
-    width:400px;
+    width:90%;
+    max-width:400px;
     padding:18px;
     font-size:28px;
     text-align:center;
@@ -116,7 +118,8 @@ button:hover {
     background:white;
     padding:30px;
     border-radius:8px;
-    width:900px;
+    width:90%;
+    max-width:900px;
     display:none;
     box-shadow:0 8px 20px rgba(0,0,0,0.3);
     position:relative;
@@ -154,9 +157,9 @@ button:hover {
     font-weight:bold;
 }
 
-/* ===== BIAŁY LOGO BAR NA DOLE ===== */
+/* ===== DOLNY BIAŁY PASEK ===== */
 .logo-bar {
-    position:absolute;
+    position:sticky; /* zawsze na dole, nie przykrywa panelu */
     bottom:0;
     width:100%;
     background:white;
@@ -224,7 +227,7 @@ button:hover {
     </div>
 </div>
 
-<!-- ===== BIAŁY LOGO BAR NA DOLE ===== -->
+<!-- ===== DOLNY BIAŁY PASEK ===== -->
 <div class="logo-bar">
     <img src="autodoc-logo.png" alt="AUTODOC">
 </div>
