@@ -19,18 +19,17 @@ body {
     position:relative;
 }
 
-/* ===== MAPA W PRAWYM GÓRNYM ROGU ===== */
+/* ===== MAPA W TLE ===== */
 .map-full {
-    position:fixed;
+    position:fixed;      /* przyklejona do całego ekranu */
     top:0;
     left:0;
     width:100%;
     height:100%;
-    object-fit:cover;   /* dopasowuje obrazek do całego ekranu */
-    z-index:0;          /* wszystko inne będzie nad mapą */
-    pointer-events:none; 
-    opacity:0.15;       /* subtelność */
-}
+    object-fit:cover;    /* dopasowanie do ekranu */
+    opacity:0.15;        /* przezroczystość – subtelna */
+    z-index:0;           /* wszystko inne nad mapą */
+    pointer-events:none;  /* kliknięcia przechodzą przez mapę */
 }
 
 /* ===== PANEL ===== */
@@ -44,7 +43,7 @@ body {
     border-radius:8px;
     box-shadow:0 10px 25px rgba(0,0,0,0.3);
     position:relative;
-    z-index:3;
+    z-index:2;   /* nad mapą */
 }
 
 .left-icon, .right-icon {
@@ -110,7 +109,7 @@ button:hover {
     display:none;
     box-shadow:0 8px 20px rgba(0,0,0,0.3);
     position:relative;
-    z-index:3;
+    z-index:2;
 }
 
 .results h2 {
@@ -154,7 +153,7 @@ button:hover {
     display:flex;
     justify-content:center;
     align-items:center;
-    z-index:3;
+    z-index:2;
     box-shadow:0 -5px 15px rgba(0,0,0,0.15);
 }
 
@@ -166,8 +165,8 @@ button:hover {
 
 <body>
 
-<!-- ===== MAPA W PRAWYM GÓRNYM ROGU ===== -->
-<img src="mapa-autodoc.png" class="map-corner" alt="Mapa">
+<!-- ===== MAPA W TLE ===== -->
+<img src="mapa-autodoc.png" class="map-full" alt="Mapa w tle">
 
 <div class="panel">
     <div class="left-icon">❤</div>
@@ -212,7 +211,7 @@ button:hover {
 </div>
 
 <script>
-// przykładowe dane (docelowo Google Sheets)
+// przykładowe dane
 const employees = {
     "8500": { bonus: "5200 zł", uph: "132", time: "6h 24m", date: "01.02.2026", workedHours: 168, monthlyLimit: 160 },
     "12345": { bonus: "3100 zł", uph: "118", time: "5h 50m", date: "01.02.2026", workedHours: 142, monthlyLimit: 160 }
