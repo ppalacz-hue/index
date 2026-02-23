@@ -11,7 +11,7 @@ body {
     font-family: Arial, sans-serif;
     background:#ff5a00;
     min-height:100vh;
-    overflow-y:auto; /* dodaje pionowy suwak jeśli treść nie mieści się w ekranie */
+    overflow-y:auto; /* pionowy scroll jeśli treść nie mieści się w ekranie */
     position:relative;
 }
 
@@ -22,7 +22,7 @@ body {
     width:100%;
     height:100%;
     object-fit:cover;
-    opacity:0.15;
+    opacity:0.15; /* subtelna */
     z-index:0;
     pointer-events:none;
 }
@@ -36,14 +36,14 @@ body {
 }
 
 .logo-center img {
-    height:120px; /* zmień wysokość jeśli chcesz większe logo */
+    height:80px; /* zmniejszone, eleganckie */
 }
 
 /* ===== PANEL ===== */
 .panel {
     background:white;
     width:90%;
-    max-width:900px;
+    max-width:800px;
     margin:20px auto;
     height:220px;
     display:flex;
@@ -56,13 +56,13 @@ body {
 }
 
 .left-icon, .right-icon {
-    width:180px;
+    width:140px;
     height:100%;
     background:#f4b38f;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:60px;
+    font-size:50px;
     color:white;
 }
 
@@ -76,18 +76,18 @@ body {
 
 input {
     width:90%;
-    max-width:400px;
-    padding:18px;
-    font-size:28px;
+    max-width:350px;
+    padding:16px;
+    font-size:24px;
     text-align:center;
     border:2px solid #ff5a00;
     border-radius:6px;
 }
 
 button {
-    margin-top:15px;
-    padding:12px 30px;
-    font-size:20px;
+    margin-top:12px;
+    padding:10px 25px;
+    font-size:18px;
     border:none;
     background:#ff5a00;
     color:white;
@@ -102,7 +102,7 @@ button:hover {
 
 .reset-btn {
     background:#0f1f26;
-    margin-left:15px;
+    margin-left:10px;
 }
 
 .reset-btn:hover {
@@ -111,12 +111,12 @@ button:hover {
 
 /* ===== WYNIKI ===== */
 .results {
-    margin:40px auto;
+    margin:30px auto;
     background:white;
-    padding:30px;
+    padding:25px;
     border-radius:8px;
     width:90%;
-    max-width:900px;
+    max-width:800px;
     display:none;
     box-shadow:0 8px 20px rgba(0,0,0,0.3);
     position:relative;
@@ -125,47 +125,52 @@ button:hover {
 
 .results h2 {
     color:#ff5a00;
+    margin-bottom:15px;
 }
 
 .result-grid {
     display:grid;
     grid-template-columns: 1fr 1fr;
-    gap:20px;
-    margin-top:20px;
-    font-size:20px;
+    gap:15px;
+    margin-top:15px;
+    font-size:18px;
 }
 
 .note {
-    margin-top:25px;
+    margin-top:20px;
     font-size:14px;
     color:#555;
 }
 
 /* ===== MIESIĘCZNE ROZLICZENIE ===== */
 .monthly-summary {
-    margin-top:30px;
-    padding:20px;
+    margin-top:20px;
+    padding:15px;
     background:#f7f7f7;
     border-radius:6px;
-    font-size:18px;
+    font-size:16px;
 }
 
 #limitStatus {
     font-weight:bold;
 }
 
-/* ===== DOLNY BIAŁY PASEK ===== */
+/* ===== DOLNY BIAŁY PASEK ZAWSZE NA DOLE ===== */
 .logo-bar {
+    position:fixed;
+    bottom:0;
     width:100%;
     background:white;
-    padding:20px 0;
+    padding:15px 0;
     display:flex;
     justify-content:center;
     align-items:center;
-    box-shadow:0 -5px 15px rgba(0,0,0,0.15);
+    box-shadow:0 -3px 10px rgba(0,0,0,0.15);
+    z-index:2;
 }
+
 .logo-bar img {
-    height:100px;
+    height:80px; /* dopasowane do nowego designu */
 }
 </style>
 </head>
@@ -219,7 +224,7 @@ button:hover {
     </div>
 </div>
 
-<!-- ===== DOLNY BIAŁY PASEK ===== -->
+<!-- ===== DOLNY BIAŁY PASEK ZAWSZE NA DOLE ===== -->
 <div class="logo-bar">
     <img src="autodoc-logo.png" alt="AUTODOC">
 </div>
