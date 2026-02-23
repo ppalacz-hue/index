@@ -6,13 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+/* ===== BODY ===== */
 body {
     margin:0;
     font-family: Arial, sans-serif;
     background:#ff5a00;
     min-height:100vh;
-    overflow-y:auto; /* pionowy scroll jeśli treść nie mieści się w ekranie */
-    position:relative;
+    display:flex;
+    flex-direction:column;
 }
 
 /* ===== MAPA W TLE ===== */
@@ -22,9 +23,17 @@ body {
     width:100%;
     height:100%;
     object-fit:cover;
-    opacity:0.15; /* subtelna */
+    opacity:0.15;
     z-index:0;
     pointer-events:none;
+}
+
+/* ===== GŁÓWNA TREŚĆ ===== */
+.main-content {
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
 /* ===== LOGO NAD PANELEM ===== */
@@ -36,7 +45,7 @@ body {
 }
 
 .logo-center img {
-    height:80px; /* zmniejszone, eleganckie */
+    height:50px; /* subtelne, eleganckie */
 }
 
 /* ===== PANEL ===== */
@@ -155,22 +164,19 @@ button:hover {
     font-weight:bold;
 }
 
-/* ===== DOLNY BIAŁY PASEK ZAWSZE NA DOLE ===== */
+/* ===== DOLNY BIAŁY PASEK ===== */
 .logo-bar {
-    position:fixed;
-    bottom:0;
     width:100%;
     background:white;
     padding:15px 0;
     display:flex;
     justify-content:center;
     align-items:center;
-    box-shadow:0 -3px 10px rgba(0,0,0,0.15);
-    z-index:2;
+    box-shadow:0 -3px 10px rgba(0,0,0,0.1);
 }
 
 .logo-bar img {
-    height:80px; /* dopasowane do nowego designu */
+    height:50px; /* subtelne jak górne logo */
 }
 </style>
 </head>
@@ -180,51 +186,53 @@ button:hover {
 <!-- ===== MAPA W TLE ===== -->
 <img src="mapa-autodoc.png" class="map-full" alt="Mapa w tle">
 
-<!-- ===== LOGO NAD PANELEM ===== -->
-<div class="logo-center">
-    <img src="logo.svg" alt="AUTODOC">
-</div>
+<div class="main-content">
 
-<!-- ===== PANEL ===== -->
-<div class="panel">
-    <div class="left-icon">❤</div>
+    <!-- ===== LOGO NAD PANELEM ===== -->
+    <div class="logo-center">
+        <img src="logo.svg" alt="AUTODOC">
+    </div>
 
-    <div class="center-input">
-        <input type="text" id="employeeId" placeholder="ZESKANUJ / WPISZ ID">
-        <div>
-            <button onclick="checkBonus()">SPRAWDŹ BONUS</button>
-            <button class="reset-btn" onclick="resetPanel()">ZERUJ</button>
+    <!-- ===== PANEL ===== -->
+    <div class="panel">
+        <div class="left-icon">❤</div>
+        <div class="center-input">
+            <input type="text" id="employeeId" placeholder="ZESKANUJ / WPISZ ID">
+            <div>
+                <button onclick="checkBonus()">SPRAWDŹ BONUS</button>
+                <button class="reset-btn" onclick="resetPanel()">ZERUJ</button>
+            </div>
+        </div>
+        <div class="right-icon">⚡</div>
+    </div>
+
+    <!-- ===== WYNIKI ===== -->
+    <div class="results" id="resultsBox">
+        <h2>Twoje wyniki:</h2>
+        <div class="result-grid">
+            <div><strong>Bonus:</strong> <span id="bonus"></span></div>
+            <div><strong>UPH:</strong> <span id="uph"></span></div>
+            <div><strong>Czas w procesie:</strong> <span id="time"></span></div>
+            <div><strong>Data generowania:</strong> <span id="date"></span></div>
+        </div>
+
+        <div class="monthly-summary">
+            <h3>Rozliczenie miesięczne:</h3>
+            <div><strong>Przepracowane godziny:</strong> <span id="workedHours"></span></div>
+            <div><strong>Limit miesięczny:</strong> <span id="monthlyLimit"></span></div>
+            <div><strong>Status:</strong> <span id="limitStatus"></span></div>
+        </div>
+
+        <div class="note">
+            Wielkość bonusu uzależniona jest od godzin w danym procesie.
+            Podana wartość może różnić się od końcowej.
+            Dziękujemy że jesteś.
         </div>
     </div>
 
-    <div class="right-icon">⚡</div>
-</div>
+</div> <!-- koniec main-content -->
 
-<!-- ===== WYNIKI ===== -->
-<div class="results" id="resultsBox">
-    <h2>Twoje wyniki:</h2>
-    <div class="result-grid">
-        <div><strong>Bonus:</strong> <span id="bonus"></span></div>
-        <div><strong>UPH:</strong> <span id="uph"></span></div>
-        <div><strong>Czas w procesie:</strong> <span id="time"></span></div>
-        <div><strong>Data generowania:</strong> <span id="date"></span></div>
-    </div>
-
-    <div class="monthly-summary">
-        <h3>Rozliczenie miesięczne:</h3>
-        <div><strong>Przepracowane godziny:</strong> <span id="workedHours"></span></div>
-        <div><strong>Limit miesięczny:</strong> <span id="monthlyLimit"></span></div>
-        <div><strong>Status:</strong> <span id="limitStatus"></span></div>
-    </div>
-
-    <div class="note">
-        Wielkość bonusu uzależniona jest od godzin w danym procesie.
-        Podana wartość może różnić się od końcowej.
-        Dziękujemy że jesteś.
-    </div>
-</div>
-
-<!-- ===== DOLNY BIAŁY PASEK ZAWSZE NA DOLE ===== -->
+<!-- ===== DOLNY PASEK ===== -->
 <div class="logo-bar">
     <img src="autodoc-logo.png" alt="AUTODOC">
 </div>
