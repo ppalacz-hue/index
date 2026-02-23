@@ -16,21 +16,22 @@ body {
     align-items:center;
     height:100vh;
     overflow:hidden;
+    position:relative;
 }
 
-/* SUBTELNA MAPA */
-body::before{
-    content:"";
-    position:absolute;
-    width:120%;
-    height:120%;
-    background:url('mapa.png') center center no-repeat;
-    background-size:cover;
-    opacity:0.06;
-    z-index:0;
+/* ===== MAPA W PRAWYM GÓRNYM ROGU ===== */
+.map-corner {
+    position:fixed;
+    top:20px;
+    right:20px;
+    width:200px;
+    height:200px;
+    object-fit:contain;
+    z-index:2;
+    pointer-events:none;
 }
 
-/* PANEL */
+/* ===== PANEL ===== */
 .panel {
     background:white;
     width:900px;
@@ -40,7 +41,8 @@ body::before{
     justify-content:space-between;
     border-radius:8px;
     box-shadow:0 10px 25px rgba(0,0,0,0.3);
-    z-index:2;
+    position:relative;
+    z-index:3;
 }
 
 .left-icon, .right-icon {
@@ -96,7 +98,7 @@ button:hover {
     background:#162f3a;
 }
 
-/* WYNIKI */
+/* ===== WYNIKI ===== */
 .results {
     margin-top:40px;
     background:white;
@@ -105,7 +107,8 @@ button:hover {
     width:900px;
     display:none;
     box-shadow:0 8px 20px rgba(0,0,0,0.3);
-    z-index:2;
+    position:relative;
+    z-index:3;
 }
 
 .results h2 {
@@ -126,26 +129,43 @@ button:hover {
     color:#555;
 }
 
-/* LOGO BAR */
+/* ===== MIESIĘCZNE ROZLICZENIE ===== */
+.monthly-summary {
+    margin-top:30px;
+    padding:20px;
+    background:#f7f7f7;
+    border-radius:6px;
+    font-size:18px;
+}
+
+#limitStatus {
+    font-weight:bold;
+}
+
+/* ===== BIAŁY LOGO BAR ===== */
 .logo-bar {
     position:absolute;
     bottom:0;
     width:100%;
     background:white;
-    padding:15px 0;
+    padding:20px 0;
     display:flex;
     justify-content:center;
     align-items:center;
-    z-index:2;
+    z-index:3;
+    box-shadow:0 -5px 15px rgba(0,0,0,0.15);
 }
 
 .logo-bar img {
-    height:150px;
+    height:100px;
 }
 </style>
 </head>
 
 <body>
+
+<!-- ===== MAPA W PRAWYM GÓRNYM ROGU ===== -->
+<img src="mapa-autodoc.png" class="map-corner" alt="Mapa">
 
 <div class="panel">
     <div class="left-icon">❤</div>
@@ -163,11 +183,19 @@ button:hover {
 
 <div class="results" id="resultsBox">
     <h2>Twoje wyniki:</h2>
+
     <div class="result-grid">
         <div><strong>Bonus:</strong> <span id="bonus"></span></div>
         <div><strong>UPH:</strong> <span id="uph"></span></div>
         <div><strong>Czas w procesie:</strong> <span id="time"></span></div>
         <div><strong>Data generowania:</strong> <span id="date"></span></div>
+    </div>
+
+    <div class="monthly-summary">
+        <h3>Rozliczenie miesięczne:</h3>
+        <div><strong>Przepracowane godziny:</strong> <span id="workedHours"></span></div>
+        <div><strong>Limit miesięczny:</strong> <span id="monthlyLimit"></span></div>
+        <div><strong>Status:</strong> <span id="limitStatus"></span></div>
     </div>
 
     <div class="note">
@@ -182,19 +210,10 @@ button:hover {
 </div>
 
 <script>
+// przykładowe dane (docelowo Google Sheets)
 const employees = {
-    "8500": {
-        bonus: "5200 zł",
-        uph: "132",
-        time: "6h 24m",
-        date: "01.02.2026"
-    },
-    "12345": {
-        bonus: "3100 zł",
-        uph: "118",
-        time: "5h 50m",
-        date: "01.02.2026"
-    }
+    "8500": { bonus: "5200 zł", uph: "132", time: "6h 24m", date: "01.02.2026", workedHours: 168, monthlyLimit: 160 },
+    "12345": { bonus: "3100 zł", uph: "118", time: "5h 50m", date: "01.02.2026", workedHours: 142, monthlyLimit: 160 }
 };
 
 let timeout;
@@ -208,6 +227,21 @@ function checkBonus(){
         document.getElementById("uph").innerText = data.uph;
         document.getElementById("time").innerText = data.time;
         document.getElementById("date").innerText = data.date;
+
+        document.getElementById("workedHours").innerText = data.workedHours + " h";
+        document.getElementById("monthlyLimit").innerText = data.monthlyLimit + " h";
+
+        const diff = data.workedHours - data.monthlyLimit;
+        const statusEl = document.getElementById("limitStatus");
+
+        if(diff >= 0){
+            statusEl.innerText = "WYROBIONY LIMIT (+ " + diff + " h)";
+            statusEl.style.color = "green";
+        } else {
+            statusEl.innerText = "BRAKUJE " + Math.abs(diff) + " h";
+            statusEl.style.color = "red";
+        }
+
         document.getElementById("resultsBox").style.display = "block";
 
         clearTimeout(timeout);
