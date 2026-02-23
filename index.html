@@ -6,41 +6,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* ===== BODY I PRZEWIJANIE ===== */
 body {
     margin:0;
     font-family: Arial, sans-serif;
     background:#ff5a00;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
     min-height:100vh;
-    overflow-y:auto; /* pionowy scroll jeśli potrzebny */
+    overflow-y:auto; /* dodaje pionowy suwak jeśli treść nie mieści się w ekranie */
     position:relative;
 }
 
 /* ===== MAPA W TLE ===== */
 .map-full {
     position:fixed;
-    top:0; bottom:0; left:0; right:0;
-    width:80%;
-    height:80%;
-    object-fit:contain; /* całe kraje widoczne */
-    opacity:0.15;       /* subtelna w tle */
+    top:0; left:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:0.15;
     z-index:0;
     pointer-events:none;
-    margin:auto;
 }
 
 /* ===== LOGO NAD PANELEM ===== */
 .logo-center {
-    position:relative;
-    z-index:2;
-    margin-bottom:20px;
+    margin:20px auto;
+    display:flex;
+    justify-content:center;
+    z-index:1;
 }
 
 .logo-center img {
-    height:120px;
+    height:120px; /* zmień wysokość jeśli chcesz większe logo */
 }
 
 /* ===== PANEL ===== */
@@ -48,6 +44,7 @@ body {
     background:white;
     width:90%;
     max-width:900px;
+    margin:20px auto;
     height:220px;
     display:flex;
     align-items:center;
@@ -55,7 +52,7 @@ body {
     border-radius:8px;
     box-shadow:0 10px 25px rgba(0,0,0,0.3);
     position:relative;
-    z-index:2;
+    z-index:1;
 }
 
 .left-icon, .right-icon {
@@ -114,7 +111,7 @@ button:hover {
 
 /* ===== WYNIKI ===== */
 .results {
-    margin-top:40px;
+    margin:40px auto;
     background:white;
     padding:30px;
     border-radius:8px;
@@ -123,7 +120,7 @@ button:hover {
     display:none;
     box-shadow:0 8px 20px rgba(0,0,0,0.3);
     position:relative;
-    z-index:2;
+    z-index:1;
 }
 
 .results h2 {
@@ -159,18 +156,14 @@ button:hover {
 
 /* ===== DOLNY BIAŁY PASEK ===== */
 .logo-bar {
-    position:sticky; /* zawsze na dole, nie przykrywa panelu */
-    bottom:0;
     width:100%;
     background:white;
     padding:20px 0;
     display:flex;
     justify-content:center;
     align-items:center;
-    z-index:2;
     box-shadow:0 -5px 15px rgba(0,0,0,0.15);
 }
-
 .logo-bar img {
     height:100px;
 }
@@ -184,7 +177,7 @@ button:hover {
 
 <!-- ===== LOGO NAD PANELEM ===== -->
 <div class="logo-center">
-    <img src="autodoc-logo.png" alt="AUTODOC">
+    <img src="logo.svg" alt="AUTODOC">
 </div>
 
 <!-- ===== PANEL ===== -->
@@ -205,7 +198,6 @@ button:hover {
 <!-- ===== WYNIKI ===== -->
 <div class="results" id="resultsBox">
     <h2>Twoje wyniki:</h2>
-
     <div class="result-grid">
         <div><strong>Bonus:</strong> <span id="bonus"></span></div>
         <div><strong>UPH:</strong> <span id="uph"></span></div>
