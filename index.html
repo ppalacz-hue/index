@@ -21,15 +21,26 @@ body {
 
 /* ===== MAPA W TLE ===== */
 .map-full {
-    position:fixed;      /* przyklejona do całego ekranu */
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    object-fit:cover;    /* dopasowanie do ekranu */
-    opacity:0.15;        /* przezroczystość – subtelna */
-    z-index:0;           /* wszystko inne nad mapą */
-    pointer-events:none;  /* kliknięcia przechodzą przez mapę */
+    position:fixed;
+    top:0; bottom:0; left:0; right:0;
+    width:80%;
+    height:80%;
+    object-fit:contain; /* zachowuje proporcje mapy */
+    opacity:0.15;       /* subtelna w tle */
+    z-index:0;          /* wszystko inne nad mapą */
+    pointer-events:none;
+    margin:auto;        /* wycentrowanie */
+}
+
+/* ===== LOGO NAD PANELEM ===== */
+.logo-center {
+    position:relative;
+    z-index:2;          /* nad mapą */
+    margin-bottom:20px; /* odstęp od panelu */
+}
+
+.logo-center img {
+    height:120px;       /* większe, ładnie widoczne */
 }
 
 /* ===== PANEL ===== */
@@ -143,7 +154,7 @@ button:hover {
     font-weight:bold;
 }
 
-/* ===== BIAŁY LOGO BAR ===== */
+/* ===== BIAŁY LOGO BAR NA DOLE ===== */
 .logo-bar {
     position:absolute;
     bottom:0;
@@ -168,6 +179,12 @@ button:hover {
 <!-- ===== MAPA W TLE ===== -->
 <img src="mapa-autodoc.png" class="map-full" alt="Mapa w tle">
 
+<!-- ===== LOGO NAD PANELEM ===== -->
+<div class="logo-center">
+    <img src="autodoc-logo.png" alt="AUTODOC">
+</div>
+
+<!-- ===== PANEL ===== -->
 <div class="panel">
     <div class="left-icon">❤</div>
 
@@ -182,6 +199,7 @@ button:hover {
     <div class="right-icon">⚡</div>
 </div>
 
+<!-- ===== WYNIKI ===== -->
 <div class="results" id="resultsBox">
     <h2>Twoje wyniki:</h2>
 
@@ -206,6 +224,7 @@ button:hover {
     </div>
 </div>
 
+<!-- ===== BIAŁY LOGO BAR NA DOLE ===== -->
 <div class="logo-bar">
     <img src="autodoc-logo.png" alt="AUTODOC">
 </div>
