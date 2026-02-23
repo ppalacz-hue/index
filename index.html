@@ -2,94 +2,228 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<title>Panel Bonusów</title>
+<title>AUTODOC PRO – Panel Bonusów</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg,#004080,#0073e6);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#ff5a00;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
 }
 
-h1 {
-    font-size: 48px;
-    margin-bottom: 40px;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+/* SUBTELNA MAPA */
+body::before{
+    content:"";
+    position:absolute;
+    width:120%;
+    height:120%;
+    background:url('mapa.png') center center no-repeat;
+    background-size:cover;
+    opacity:0.06;
+    z-index:0;
+}
+
+/* PANEL */
+.panel {
+    background:white;
+    width:900px;
+    height:220px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-radius:8px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+    z-index:2;
+}
+
+.left-icon, .right-icon {
+    width:180px;
+    height:100%;
+    background:#f4b38f;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:60px;
+    color:white;
+}
+
+.center-input {
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
 }
 
 input {
-    font-size: 28px;
-    padding: 15px;
-    width: 400px;
-    border-radius: 8px;
-    border: none;
-    text-align: center;
-    margin-bottom: 20px;
+    width:400px;
+    padding:18px;
+    font-size:28px;
+    text-align:center;
+    border:2px solid #ff5a00;
+    border-radius:6px;
 }
 
 button {
-    font-size: 24px;
-    padding: 12px 25px;
-    border-radius: 8px;
-    border: none;
-    background-color: #00bfff;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    margin-top:15px;
+    padding:12px 30px;
+    font-size:20px;
+    border:none;
+    background:#ff5a00;
+    color:white;
+    border-radius:6px;
+    cursor:pointer;
+    transition:0.2s;
 }
 
 button:hover {
-    background-color: #0080ff;
+    background:#e04e00;
 }
 
-#bonus {
-    font-size: 36px;
-    margin-top: 40px;
-    padding: 20px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 12px;
-    min-width: 300px;
+.reset-btn {
+    background:#0f1f26;
+    margin-left:15px;
+}
+
+.reset-btn:hover {
+    background:#162f3a;
+}
+
+/* WYNIKI */
+.results {
+    margin-top:40px;
+    background:white;
+    padding:30px;
+    border-radius:8px;
+    width:900px;
+    display:none;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    z-index:2;
+}
+
+.results h2 {
+    color:#ff5a00;
+}
+
+.result-grid {
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:20px;
+    margin-top:20px;
+    font-size:20px;
+}
+
+.note {
+    margin-top:25px;
+    font-size:14px;
+    color:#555;
+}
+
+/* LOGO BAR */
+.logo-bar {
+    position:absolute;
+    bottom:0;
+    width:100%;
+    background:white;
+    padding:20px 0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:2;
+}
+
+.logo-bar img {
+    height:100px;
 }
 </style>
 </head>
+
 <body>
 
-<h1>Panel Bonusów</h1>
+<div class="panel">
+    <div class="left-icon">❤</div>
 
-<input type="text" id="scanInput" placeholder="Wpisz lub zeskanuj ID">
-<button id="checkBtn">Sprawdź premię</button>
+    <div class="center-input">
+        <input type="text" id="employeeId" placeholder="ZESKANUJ / WPISZ ID">
+        <div>
+            <button onclick="checkBonus()">SPRAWDŹ BONUS</button>
+            <button class="reset-btn" onclick="resetPanel()">ZERUJ</button>
+        </div>
+    </div>
 
-<div id="bonus"></div>
+    <div class="right-icon">⚡</div>
+</div>
+
+<div class="results" id="resultsBox">
+    <h2>Twoje wyniki:</h2>
+    <div class="result-grid">
+        <div><strong>Bonus:</strong> <span id="bonus"></span></div>
+        <div><strong>UPH:</strong> <span id="uph"></span></div>
+        <div><strong>Czas w procesie:</strong> <span id="time"></span></div>
+        <div><strong>Data generowania:</strong> <span id="date"></span></div>
+    </div>
+
+    <div class="note">
+        Wielkość bonusu uzależniona jest od godzin w danym procesie.
+        Podana wartość może różnić się od końcowej.
+        Dziękujemy że jesteś.
+    </div>
+</div>
+
+<div class="logo-bar">
+    <img src="autodoc-logo.png" alt="AUTODOC">
+</div>
 
 <script>
-// Tu wpisujesz ID i odpowiadające premie
-const data = {
-    "8500": "Twój bonus: 5000 PLN",
-    "12345": "Twój bonus: 1200 PLN",
-    "67890": "Twój bonus: 950 PLN"
-    // Tutaj możesz dodać resztę pracowników
+const employees = {
+    "8500": {
+        bonus: "5200 zł",
+        uph: "132",
+        time: "6h 24m",
+        date: "01.02.2026"
+    },
+    "12345": {
+        bonus: "3100 zł",
+        uph: "118",
+        time: "5h 50m",
+        date: "01.02.2026"
+    }
 };
 
-function showBonus() {
-    const id = document.getElementById("scanInput").value.trim();
-    const bonusDiv = document.getElementById("bonus");
-    if(data[id]) {
-        bonusDiv.innerText = data[id];
+let timeout;
+
+function checkBonus(){
+    const id = document.getElementById("employeeId").value.trim();
+    const data = employees[id];
+
+    if(data){
+        document.getElementById("bonus").innerText = data.bonus;
+        document.getElementById("uph").innerText = data.uph;
+        document.getElementById("time").innerText = data.time;
+        document.getElementById("date").innerText = data.date;
+        document.getElementById("resultsBox").style.display = "block";
+
+        clearTimeout(timeout);
+        timeout = setTimeout(resetPanel, 30000);
     } else {
-        bonusDiv.innerText = "Nie znaleziono ID!";
+        alert("Nie znaleziono pracownika!");
     }
-    document.getElementById("scanInput").value = "";
+
+    document.getElementById("employeeId").value = "";
 }
 
-document.getElementById("checkBtn").addEventListener("click", showBonus);
-document.getElementById("scanInput").addEventListener("keypress", function(e){
-    if(e.key === "Enter") showBonus();
-});
+function resetPanel(){
+    document.getElementById("resultsBox").style.display = "none";
+    document.getElementById("employeeId").value = "";
+    clearTimeout(timeout);
+}
 </script>
 
 </body>
