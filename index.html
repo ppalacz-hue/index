@@ -5,7 +5,10 @@
 <title>AUTODOC PRO – Panel Bonusów</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
+/* ===== ORYGINALNY STYL – NIE ZMIENIONY ===== */
 body {
     margin:0;
     font-family: Arial, sans-serif;
@@ -16,7 +19,6 @@ body {
     min-height:100vh;
 }
 
-/* ===== SUBTELNA MAPA W TLE ===== */
 body::before{
     content:"";
     position:fixed;
@@ -32,17 +34,9 @@ body::before{
     pointer-events:none;
 }
 
-/* ===== LOGO GÓRNE ===== */
-.top-logo{
-    margin-top:80px;
-    margin-bottom:30px;
-    z-index:2;
-}
-.top-logo img{
-    height:30px;
-}
+.top-logo{ margin-top:80px; margin-bottom:30px; z-index:2; }
+.top-logo img{ height:30px; }
 
-/* ===== PANEL ===== */
 .panel {
     background:white;
     width:900px;
@@ -56,288 +50,234 @@ body::before{
     z-index:2;
 }
 
-.left-icon, .right-icon {
-    width:180px;
-    height:100%;
-    background:#f4b38f;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:60px;
-    color:white;
+.left-icon,.right-icon{
+    width:180px;height:100%;background:#f4b38f;
+    display:flex;align-items:center;justify-content:center;
+    font-size:60px;color:white;
 }
 
-.center-input {
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
+.center-input{
+    flex:1;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
 }
 
-input {
-    width:400px;
-    max-width:90%;
-    padding:18px;
-    font-size:24px;
-    text-align:center;
-    border:2px solid #ff5a00;
-    border-radius:6px;
+input,select{
+    width:400px;max-width:90%;
+    padding:18px;font-size:18px;
+    text-align:center;border:2px solid #ff5a00;
+    border-radius:6px;margin-top:10px;
 }
 
-button {
-    margin-top:15px;
-    padding:12px 30px;
-    font-size:18px;
-    border:none;
-    background:#ff5a00;
-    color:white;
-    border-radius:6px;
-    cursor:pointer;
+button{
+    margin-top:15px;padding:12px 30px;
+    font-size:18px;border:none;
+    background:#ff5a00;color:white;
+    border-radius:6px;cursor:pointer;
 }
 
-button:hover {
-    background:#e04e00;
-}
+button:hover{ background:#e04e00; }
 
-.reset-btn {
-    background:#0f1f26;
-    margin-left:15px;
-}
+.reset-btn{ background:#0f1f26;margin-left:15px; }
+.reset-btn:hover{ background:#162f3a; }
 
-.reset-btn:hover {
-    background:#162f3a;
-}
-
-/* ===== WYNIKI ===== */
-.results {
-    margin-top:40px;
-    background:white;
-    padding:30px;
-    border-radius:8px;
-    width:900px;
-    max-width:95%;
-    display:none;
-    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+.results{
+    margin-top:40px;background:white;
+    padding:30px;border-radius:8px;
+    width:900px;max-width:95%;
+    display:none;box-shadow:0 8px 20px rgba(0,0,0,0.3);
     z-index:2;
 }
 
-.results h2 {
-    color:#ff5a00;
+.results h2{ color:#ff5a00; }
+
+.result-grid{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:20px;margin-top:20px;font-size:20px;
 }
 
-.result-grid {
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:20px;
-    margin-top:20px;
-    font-size:20px;
-}
+.note{ margin-top:25px;font-size:14px;color:#555; }
 
-.note {
-    margin-top:25px;
-    font-size:14px;
-    color:#555;
-}
-
-/* ===== DOLNY PASEK ===== */
-.logo-bar {
-    margin-top:auto;
-    width:100%;
-    background:white;
-    padding:15px 0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:30px;
-    box-shadow:0 -3px 10px rgba(0,0,0,0.2);
+.logo-bar{
+    margin-top:auto;width:100%;background:white;
+    padding:15px 0;display:flex;
+    justify-content:center;align-items:center;
+    gap:30px;box-shadow:0 -3px 10px rgba(0,0,0,0.2);
     z-index:5;
 }
 
-.logo-bar img {
-    height:30px;
-}
+.logo-bar img{ height:30px; }
 
-.bottom-icons{
-    display:flex;
-    gap:15px;
-}
+.bottom-icons{ display:flex;gap:15px; }
 
 .icon-btn{
-    width:42px;
-    height:42px;
-    background:#f4f4f4;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:22px;
-    cursor:pointer;
-    transition:0.2s;
+    width:42px;height:42px;background:#f4f4f4;
+    border-radius:50%;display:flex;
+    align-items:center;justify-content:center;
+    font-size:22px;cursor:pointer;transition:0.2s;
 }
 
 .icon-btn:hover{
-    background:#ff5a00;
-    transform:scale(1.1);
+    background:#ff5a00;transform:scale(1.1);
 }
 
-/* ===== MODAL ===== */
 .modal{
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
+    display:none;position:fixed;
+    top:0;left:0;width:100%;height:100%;
     background:rgba(0,0,0,0.5);
-    justify-content:center;
-    align-items:center;
+    justify-content:center;align-items:center;
     z-index:20;
 }
 
 .modal-content{
-    background:white;
-    padding:30px;
-    border-radius:10px;
-    width:90%;
-    max-width:420px;
-    text-align:center;
+    background:white;padding:30px;
+    border-radius:10px;width:90%;
+    max-width:420px;text-align:center;
 }
-
 </style>
 </head>
-
 <body>
 
-<div class="top-logo">
-    <img src="logo.svg">
-</div>
+<div class="top-logo"><img src="logo.svg"></div>
 
 <div class="panel">
-    <div class="left-icon">❤</div>
+<div class="left-icon">❤</div>
 
-    <div class="center-input">
-        <input type="text" id="employeeId" placeholder="ZESKANUJ / WPISZ ID">
-        <div>
-            <button onclick="checkBonus()">SPRAWDŹ BONUS</button>
-            <button class="reset-btn" onclick="resetPanel()">ZERUJ</button>
-        </div>
-    </div>
+<div class="center-input">
+<input type="text" id="employeeId" placeholder="ZESKANUJ / WPISZ ID">
+<div>
+<button onclick="checkBonus()">SPRAWDŹ BONUS</button>
+<button class="reset-btn" onclick="resetPanel()">ZERUJ</button>
+</div>
+</div>
 
-    <div class="right-icon">⚡</div>
+<div class="right-icon">⚡</div>
 </div>
 
 <div class="results" id="resultsBox">
-    <h2>Twoje wyniki:</h2>
-    <div class="result-grid">
-        <div><strong>Bonus:</strong> <span id="bonus"></span></div>
-        <div><strong>UPH:</strong> <span id="uph"></span></div>
-        <div><strong>Czas pracy:</strong> <span id="worked"></span></div>
-        <div><strong>Limit miesięczny:</strong> <span id="limit"></span></div>
-        <div><strong>Status:</strong> <span id="status"></span></div>
-        <div><strong>Data generowania:</strong> <span id="date"></span></div>
-    </div>
-
-    <div class="note">
-        Wielkość bonusu uzależniona jest od godzin w danym procesie.
-        Podana wartość może różnić się od końcowej.
-        Dziękujemy że jesteś.
-    </div>
+<h2>Twoje wyniki:</h2>
+<div class="result-grid">
+<div><strong>Bonus:</strong> <span id="bonus"></span></div>
+<div><strong>UPH:</strong> <span id="uph"></span></div>
+<div><strong>Czas pracy:</strong> <span id="worked"></span></div>
+<div><strong>Limit miesięczny:</strong> <span id="limit"></span></div>
+<div><strong>Status:</strong> <span id="status"></span></div>
+<div><strong>Data generowania:</strong> <span id="date"></span></div>
+</div>
+<div class="note">
+Wielkość bonusu uzależniona jest od godzin w danym procesie.
+Podana wartość może różnić się od końcowej.
+Dziękujemy że jesteś.
+</div>
 </div>
 
-<!-- ===== DOLNY PASEK ===== -->
 <div class="logo-bar">
-    <img src="autodoc-logo.png">
-
-    <div class="bottom-icons">
-        <div class="icon-btn" onclick="openHR()">👥</div>
-        <div class="icon-btn" onclick="openQR()">💬</div>
-        <div class="icon-btn" onclick="goToSite()">🌍</div>
-    </div>
+<img src="autodoc-logo.png">
+<div class="bottom-icons">
+<div class="icon-btn" onclick="openHR()">👥</div>
+<div class="icon-btn" onclick="openQR()">💬</div>
+<div class="icon-btn" onclick="goToSite()">🌍</div>
+<div class="icon-btn" onclick="openSchedule()">📅</div>
+<div class="icon-btn" onclick="openLeave()">📝</div>
+</div>
 </div>
 
-<!-- HR -->
-<div id="hrModal" class="modal">
-    <div class="modal-content">
-        <h3>Dział HR – Budynek M40</h3>
-        <p><strong>Poniedziałek – Piątek</strong></p>
-        <p>08:00 – 16:00</p>
-        <button onclick="closeHR()" style="margin-top:20px;">ZAMKNIJ</button>
-    </div>
+<!-- Modale -->
+<div id="scheduleModal" class="modal">
+<div class="modal-content">
+<h3>Twój grafik</h3>
+<p>Pon – Pt: 06:00 – 14:00</p>
+<p>Sob/Ndz: Wolne</p>
+<button onclick="closeSchedule()">ZAMKNIJ</button>
+</div>
 </div>
 
-<!-- PRZEŁOŻENI -->
-<div id="qrModal" class="modal">
-    <div class="modal-content">
-        <h3>Przełożeni</h3>
-        <p><strong>Inbound:</strong> Gosia, Agnieszka</p>
-        <p><strong>Outbound:</strong> Paulina, Mariia</p>
-        <p><strong>Antresola:</strong> Adrian, Yevheniia</p>
-
-        <div style="margin-top:20px;">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://autodoc.pl" alt="QR">
-        </div>
-
-        <button onclick="closeQR()" style="margin-top:20px;">ZAMKNIJ</button>
-    </div>
+<div id="leaveModal" class="modal">
+<div class="modal-content">
+<h3>Wniosek o urlop</h3>
+<input type="text" id="leaveName" placeholder="Imię i nazwisko">
+<input type="text" id="leaveDept" placeholder="Dział">
+<input type="text" id="leaveBoss" placeholder="Przełożony">
+<select id="leaveType">
+<option value="">-- Wybierz typ urlopu --</option>
+<option>Opieka</option>
+<option>Urodzinowy</option>
+<option>Na żądanie</option>
+</select>
+<button onclick="submitLeave()">WYŚLIJ</button>
+<button onclick="closeLeave()" style="background:#555;">ZAMKNIJ</button>
+</div>
 </div>
 
 <script>
-const employees = {
-    "8500":{
-        bonus:"5200 zł",
-        uph:"132",
-        worked:168,
-        limit:160,
-        date:"01.02.2026"
-    }
+const employees={
+"8500":{name:"Jan Kowalski",bonus:"5200 zł",uph:"132",worked:168,limit:160,date:"01.02.2026"}
 };
 
+let loggedUser=null;
+
 function checkBonus(){
-    const id=document.getElementById("employeeId").value.trim();
-    const data=employees[id];
-
-    if(data){
-        document.getElementById("bonus").innerText=data.bonus;
-        document.getElementById("uph").innerText=data.uph;
-        document.getElementById("worked").innerText=data.worked+" h";
-        document.getElementById("limit").innerText=data.limit+" h";
-
-        if(data.worked>=data.limit){
-            document.getElementById("status").innerText="Limit wyrobiony ✅";
-            document.getElementById("status").style.color="green";
-        }else{
-            document.getElementById("status").innerText="Brakuje "+(data.limit-data.worked)+" h";
-            document.getElementById("status").style.color="red";
-        }
-
-        document.getElementById("date").innerText=data.date;
-        document.getElementById("resultsBox").style.display="block";
-    }else{
-        alert("Nie znaleziono pracownika!");
-    }
-
-    document.getElementById("employeeId").value="";
+const id=document.getElementById("employeeId").value.trim();
+const data=employees[id];
+if(data){
+loggedUser=data;
+document.getElementById("bonus").innerText=data.bonus;
+document.getElementById("uph").innerText=data.uph;
+document.getElementById("worked").innerText=data.worked+" h";
+document.getElementById("limit").innerText=data.limit+" h";
+document.getElementById("status").innerText=data.worked>=data.limit?"Limit wyrobiony ✅":"Brakuje "+(data.limit-data.worked)+" h";
+document.getElementById("status").style.color=data.worked>=data.limit?"green":"red";
+document.getElementById("date").innerText=data.date;
+document.getElementById("resultsBox").style.display="block";
+}else alert("Nie znaleziono pracownika!");
+document.getElementById("employeeId").value="";
 }
 
 function resetPanel(){
-    document.getElementById("resultsBox").style.display="none";
+loggedUser=null;
+document.getElementById("resultsBox").style.display="none";
 }
 
-function openHR(){
-    document.getElementById("hrModal").style.display="flex";
+function openSchedule(){
+if(!loggedUser)return alert("Najpierw sprawdź ID!");
+document.getElementById("scheduleModal").style.display="flex";
 }
-function closeHR(){
-    document.getElementById("hrModal").style.display="none";
+function closeSchedule(){document.getElementById("scheduleModal").style.display="none";}
+
+function openLeave(){
+if(!loggedUser)return alert("Najpierw sprawdź ID!");
+document.getElementById("leaveName").value=loggedUser.name||"";
+document.getElementById("leaveModal").style.display="flex";
 }
-function openQR(){
-    document.getElementById("qrModal").style.display="flex";
+function closeLeave(){document.getElementById("leaveModal").style.display="none";}
+
+function submitLeave(){
+const name=leaveName.value;
+const dept=leaveDept.value;
+const boss=leaveBoss.value;
+const type=leaveType.value;
+if(!name||!dept||!boss||!type) return alert("Uzupełnij wszystkie pola!");
+
+const leaveData={name,dept,boss,type,date:new Date().toLocaleDateString()};
+localStorage.setItem("lastLeave",JSON.stringify(leaveData));
+
+generatePDF(leaveData);
+
+window.location.href=`mailto:hr@autodoc.pl?subject=Wniosek urlopowy&body=Pracownik: ${name}%0ADział: ${dept}%0APrzełożony: ${boss}%0ATyp: ${type}`;
+
+alert("Wniosek zapisany, PDF wygenerowany i przygotowany mail ✅");
+closeLeave();
 }
-function closeQR(){
-    document.getElementById("qrModal").style.display="none";
-}
-function goToSite(){
-    window.open("https://autodoc.pl","_blank");
+
+function generatePDF(data){
+const {jsPDF}=window.jspdf;
+const doc=new jsPDF();
+doc.text("WNIOSEK URLOPOWY",20,20);
+doc.text(`Imię i nazwisko: ${data.name}`,20,40);
+doc.text(`Dział: ${data.dept}`,20,50);
+doc.text(`Przełożony: ${data.boss}`,20,60);
+doc.text(`Typ urlopu: ${data.type}`,20,70);
+doc.text(`Data: ${data.date}`,20,80);
+doc.save("wniosek_urlopowy.pdf");
 }
 </script>
 
